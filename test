@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Valentinstag</title>
+  <style>
+    :root{
+      --bg1:#120017;
+      --bg2:#2b0016;
+      --card: rgba(255,255,255,0.08);
+      --card2: rgba(255,255,255,0.12);
+      --text: #fff7fb;
+      --muted: rgba(255,247,251,0.78);
+      --shadow: rgba(0,0,0,0.45);
+      --accent: rgba(255, 120, 170, 1);
+      --accent2: rgba(255, 80, 130, 1);
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding: 28px 16px;
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 600px at 20% 10%, rgba(255, 80, 130, 0.18), transparent 60%),
+        radial-gradient(900px 520px at 80% 90%, rgba(255, 150, 200, 0.14), transparent 60%),
+        linear-gradient(140deg, var(--bg1), var(--bg2));
+      overflow:hidden;
+    }
+
+    .wrap{
+      width: min(780px, 96vw);
+      position: relative;
+    }
+
+    .card{
+      border-radius: 22px;
+      background: linear-gradient(180deg, var(--card), rgba(255,255,255,0.05));
+      box-shadow: 0 18px 55px var(--shadow);
+      border: 1px solid rgba(255,255,255,0.16);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .top{
+      padding: 26px 26px 10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.16);
+      font-weight: 650;
+      letter-spacing: 0.2px;
+    }
+
+    .badge .dot{
+      width:10px; height:10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff, var(--accent2));
+      box-shadow: 0 0 22px rgba(255,80,130,0.45);
+    }
+
+    .date{
+      opacity: 0.85;
+      font-size: 13px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    .content{
+      padding: 6px 26px 24px;
+      display:grid;
+      gap: 16px;
+    }
+
+    h1{
+      margin:0;
+      font-size: clamp(26px, 3.2vw, 34px);
+      line-height: 1.12;
+      letter-spacing: 0.2px;
+    }
+
+    .sub{
+      margin:0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 15px;
+      max-width: 62ch;
+    }
+
+    .message{
+      padding: 18px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      display:grid;
+      gap: 10px;
+    }
+
+    .label{
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      opacity: 0.78;
+    }
+
+    .text{
+      font-size: 16px;
+      line-height: 1.6;
+      color: rgba(255,247,251,0.92);
+      white-space: pre-wrap;
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      padding: 0 26px 26px;
+    }
+
+    button{
+      appearance:none;
+      border:0;
+      cursor:pointer;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      color: #220012;
+      background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,220,235,0.95));
+      box-shadow: 0 10px 25px rgba(0,0,0,0.22);
+      transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+    }
+
+    button.secondary{
+      color: var(--text);
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      box-shadow: none;
+    }
+
+    button:hover{ transform: translateY(-1px); }
+    button:active{ transform: translateY(0px); opacity: 0.92; }
+
+    .surprise{
+      margin: 0 26px 26px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.16);
+      overflow:hidden;
+      display:none;
+      position: relative;
+      min-height: 220px;
+      place-items:center;
+      text-align:center;
+      padding: 18px;
+    }
+
+    .surprise.on{ display:grid; }
+
+    .big{
+      font-size: clamp(28px, 3.4vw, 40px);
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      margin: 0 0 8px;
+    }
+
+    .small{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 15px;
+      max-width: 60ch;
+    }
+
+    .sig{
+      margin-top: 14px;
+      font-weight: 750;
+      letter-spacing: 0.2px;
+    }
+
+    .hearts{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+    }
+
+    .heart{
+      position:absolute;
+      width: 14px; height: 14px;
+      transform: rotate(45deg);
+      opacity: 0.92;
+      animation: floatUp 1200ms ease-out forwards;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.22));
+    }
+    .heart:before, .heart:after{
+      content:"";
+      position:absolute;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--c);
+    }
+    .heart{ background: var(--c); }
+    .heart:before{ left:-7px; top:0; }
+    .heart:after{ left:0; top:-7px; }
+
+    @keyframes floatUp{
+      from{ transform: translate(var(--x0), 130px) rotate(45deg) scale(1); }
+      to  { transform: translate(var(--x1), -280px) rotate(45deg) scale(0.9); opacity: 0; }
+    }
+
+    .glow{
+      position:absolute;
+      inset:-80px;
+      background: radial-gradient(circle at 35% 20%, rgba(255,80,130,0.22), transparent 55%),
+                  radial-gradient(circle at 70% 85%, rgba(255,200,230,0.16), transparent 55%);
+      pointer-events:none;
+      mix-blend-mode: screen;
+    }
+
+    .footer{
+      padding: 0 26px 22px;
+      color: rgba(255,247,251,0.60);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .mono{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      opacity: 0.85;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card" role="article" aria-label="Valentinstagskarte">
+      <div class="glow"></div>
+
+      <div class="top">
+        <div class="badge"><span class="dot"></span><span>Valentinstagskarte</span></div>
+        <div class="date" id="dateText"></div>
+      </div>
+
+      <div class="content">
+        <h1>Für einen besonderen Menschen</h1>
+        <p class="sub">
+          Eine kurze Nachricht kann viel bedeuten. Der Text kann im Code angepasst oder um eigene Zeilen ergänzt werden.
+        </p>
+
+        <div class="message">
+          <div class="label">Nachricht</div>
+          <div class="text" id="msg">
+Heute wird leise „Danke“ gesagt.
+Für Nähe, Geduld und Wärme,
+für die kleinen Dinge, die den Alltag schöner machen.
+
+Happy Valentines Day, minha Querida!.
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="reveal">Open surprise</button>
+        <button class="secondary" id="copy">Nachricht kopieren</button>
+      </div>
+
+      <div class="surprise" id="surprise" aria-live="polite">
+        <div class="hearts" id="hearts"></div>
+        <div>
+          <p class="big">♥</p>
+          <p class="small">
+            Möge dieser Tag an etwas Einfaches erinnern:
+            Dass Zuneigung nicht groß sein muss, um echt zu sein.
+          </p>
+          <div class="sig" id="sig">— Dein Name</div>
+        </div>
+      </div>
+
+      <div class="footer">
+        Anpassung: Der Text in <span class="mono">#msg</span> und die Signatur <span class="mono">#sig</span> können direkt im Code ersetzt werden.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const dateText = document.getElementById("dateText");
+    const reveal = document.getElementById("reveal");
+    const copyBtn = document.getElementById("copy");
+    const surprise = document.getElementById("surprise");
+    const hearts = document.getElementById("hearts");
+    const msg = document.getElementById("msg");
+
+    const now = new Date();
+    const fmt = new Intl.DateTimeFormat("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+    dateText.textContent = fmt.format(now);
+
+    function rand(min, max){ return Math.random() * (max - min) + min; }
+
+    function spawnHearts(count = 40){
+      for(let i=0;i<count;i++){
+        const h = document.createElement("div");
+        h.className = "heart";
+
+        const hue = rand(330, 360);
+        const sat = rand(75, 92);
+        const lig = rand(62, 74);
+        h.style.setProperty("--c", `hsl(${hue} ${sat}% ${lig}%)`);
+
+        h.style.left = rand(0, 100).toFixed(2) + "%";
+        h.style.top  = rand(70, 96).toFixed(2) + "%";
+        h.style.setProperty("--x0", rand(-260, 260).toFixed(0) + "px");
+        h.style.setProperty("--x1", rand(-320, 320).toFixed(0) + "px");
+        h.style.animationDuration = rand(900, 1400).toFixed(0) + "ms";
+
+        hearts.appendChild(h);
+        h.addEventListener("animationend", () => h.remove());
+      }
+    }
+
+    reveal.addEventListener("click", () => {
+      surprise.classList.add("on");
+      spawnHearts(48);
+    });
+
+    copyBtn.addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(msg.textContent.trim());
+        copyBtn.textContent = "Kopiert";
+        setTimeout(() => (copyBtn.textContent = "Nachricht kopieren"), 1100);
+      }catch(e){
+        copyBtn.textContent = "Nicht möglich";
+        setTimeout(() => (copyBtn.textContent = "Nachricht kopieren"), 1100);
+      }
+    });
+  </script>
+</body>
+</html>
+
