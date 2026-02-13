@@ -245,10 +245,56 @@
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       opacity: 0.85;
     }
+    /* Hintergrund: schwimmende Herzen */
+.bg-hearts{
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-heart{
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  transform: rotate(45deg);
+  opacity: 0.35;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,0.20));
+  animation-name: driftUp;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.bg-heart::before,
+.bg-heart::after{
+  content:"";
+  position:absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--c);
+}
+
+.bg-heart{
+  background: var(--c);
+}
+.bg-heart::before{ left:-7px; top:0; }
+.bg-heart::after{ left:0; top:-7px; }
+
+@keyframes driftUp{
+  0%   { transform: translate(0, 110vh) rotate(45deg); }
+  100% { transform: translate(var(--dx), -140vh) rotate(45deg); }
+}
+
+/* Sicherstellen, dass Karte über dem Hintergrund liegt */
+.wrap, .card{ position: relative; z-index: 2; }
+
   </style>
 </head>
 
 <body>
+  <div class="bg-hearts" id="bgHearts" aria-hidden="true"></div>
   <div class="wrap">
     <div class="card" role="article" aria-label="Valentinstagskarte">
       <div class="glow"></div>
@@ -358,9 +404,47 @@ Happy Valentines Day, minha Querida! ♥
         setTimeout(() => (copyBtn.textContent = "Copy Message"), 1100);
       }
     });
+    (function initBackgroundHearts(){
+  const container = document.getElementById("bgHearts");
+  if (!container) return;
+
+  const count = 55; // Anzahl der Herzen im Hintergrund
+
+  function rand(min, max){ return Math.random() * (max - min) + min; }
+
+  for (let i = 0; i < count; i++){
+    const h = document.createElement("div");
+    h.className = "bg-heart";
+
+    const hue = rand(330, 360);
+    const sat = rand(65, 95);
+    const lig = rand(58, 78);
+    h.style.setProperty("--c", `hsl(${hue} ${sat}% ${lig}%)`);
+
+    h.style.left = rand(0, 100).toFixed(2) + "%";
+    h.style.top = rand(0, 100).toFixed(2) + "%";
+
+    const size = rand(8, 18);
+    h.style.width = size + "px";
+    h.style.height = size + "px";
+
+    const duration = rand(14, 38);
+    h.style.animationDuration = duration.toFixed(1) + "s";
+
+    const delay = rand(-40, 0);
+    h.style.animationDelay = delay.toFixed(1) + "s";
+
+    const dx = rand(-120, 120);
+    h.style.setProperty("--dx", dx.toFixed(0) + "px");
+
+    container.appendChild(h);
+  }
+})();
+
   </script>
 </body>
 </html>
+
 
 
 
